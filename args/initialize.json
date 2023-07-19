@@ -1,0 +1,24 @@
+{
+    "function_id": "default::checkdot_bridge::initialize",
+    "type_args": [
+        "0x1::aptos_coin::AptosCoin"
+    ],
+    "args": [
+        {
+            "type": "u8",
+            "value": [61, 62, 63]
+        },
+        {
+            "type": "u64",
+            "value": 1
+        },
+        {
+            "type": "u64",
+            "value": 2
+        },
+        {
+            "type": "address",
+            "value": "8243ef06864e03d743d021ac08e1b5c786bb8c40f56cd419cbb6e7f3c4400111"
+        }
+    ]
+}

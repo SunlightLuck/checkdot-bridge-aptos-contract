@@ -1,0 +1,10 @@
+{
+    "function_id": "default::checkdot_bridge::depositApt",
+    "type_args": [],
+    "args": [
+        {
+            "type": "u64",
+            "value": 100000
+        }
+    ]
+}

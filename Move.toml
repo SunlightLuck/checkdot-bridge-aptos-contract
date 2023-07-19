@@ -1,0 +1,12 @@
+[package]
+name = "checkdot-bridge"
+version = "0.0.0"
+
+[dependencies]
+Liquidswap = { git = "https://github.com/pontem-network/liquidswap.git", rev = "v0.4.4" }
+AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", subdir = "aptos-move/framework/aptos-framework", rev = "devnet" }
+checkdot-aptos-coin = { git = "https://github.com/checkdot/CheckDot.AptosCoinContract.git", rev="aebb04a18c58681229224c2d7424cea8ba8dcf92" }
+
+[addresses]
+bridge_addr = "0x88"
+stable_coin = "0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa"

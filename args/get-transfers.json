@@ -1,0 +1,16 @@
+{
+    "function_id": "default::checkdot_bridge::get_transfers",
+    "type_args": [
+        "0x1::aptos_coin::AptosCoin"
+    ],
+    "args": [
+        {
+            "type": "string",
+            "value": 0
+        },
+        {
+            "type": "string",
+            "value": 1
+        }
+    ]
+}
