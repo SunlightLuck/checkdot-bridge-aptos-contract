@@ -16,7 +16,6 @@ module bridge_addr::checkdot_bridge {
     use liquidswap::curves::Uncorrelated;
 
     use cdt::CdtCoin::CDT;
-    use test_coins::coins::USDT;
 
     const ERR_NOT_INITIALIZED: u64 = 100;
     const ERR_NOT_OWNER: u64 = 200;
@@ -191,7 +190,7 @@ module bridge_addr::checkdot_bridge {
         *unlock_ask_time = timestamp::now_microseconds();
     }
 
-    public entry fun init_transfer(acc: &signer, fee: u64, quantity: u64, to_chain: String, data: String) acquires Bridge, BridgeConfig {
+    public entry fun init_transfer<USD>(acc: &signer, fee: u64, quantity: u64, to_chain: String, data: String) acquires Bridge, BridgeConfig {
         let addr = signer::address_of(acc);
 
         assert_is_initizlied();
@@ -199,7 +198,7 @@ module bridge_addr::checkdot_bridge {
 
         let bridge = borrow_global_mut<Bridge>(@bridge_addr);
 
-        assert!(fee >= fees_in_apt(bridge), ERR_PAYMENT_ABORTED);
+        assert!(fee >= fees_in_apt<USD>(bridge), ERR_PAYMENT_ABORTED);
         assert!(quantity >= bridge.minimum_transfer_quantity, ERR_INSUFFICIENT_QUANTITY);
         assert!(coin::balance<AptosCoin>(addr) >= fee, ERR_INSUFFICIENT_BALANCE);
 
@@ -427,12 +426,12 @@ module bridge_addr::checkdot_bridge {
     }
     
     #[view]
-    public fun get_fees_in_apt(): u64 acquires Bridge {
+    public fun get_fees_in_apt<USD>(): u64 acquires Bridge {
         assert_is_initizlied();
 
         let bridge = borrow_global<Bridge>(@bridge_addr);
 
-        fees_in_apt(bridge)
+        fees_in_apt<USD>(bridge)
     }
 
     #[view]
@@ -460,12 +459,12 @@ module bridge_addr::checkdot_bridge {
     }
 
 
-    fun fees_in_apt(bridge: &Bridge): u64 {
+    fun fees_in_apt<USD>(bridge: &Bridge): u64 {
         assert_is_initizlied();
 
         let fees_in_dollar = bridge.fees_in_dollar;
 
-        let (x_res, y_res) = router::get_reserves_size<AptosCoin, USDT, Uncorrelated>();
+        let (x_res, y_res) = router::get_reserves_size<AptosCoin, USD, Uncorrelated>();
 
         assert!(y_res > 0, ERR_ZERO_DIVISION);
 

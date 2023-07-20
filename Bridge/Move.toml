@@ -6,7 +6,6 @@ version = "0.1.0"
 Liquidswap = { git = "https://github.com/pontem-network/liquidswap.git", rev = "v0.4.4" }
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", subdir = "aptos-move/framework/aptos-framework", rev = "devnet" }
 checkdot-aptos-coin = { git = "https://github.com/checkdot/CheckDot.AptosCoinContract.git", rev="aebb04a18c58681229224c2d7424cea8ba8dcf92" }
-TestCoins = { local = "../StableCoin" }
 
 [addresses]
-bridge_addr = "ce6264e1a8b84d14d656f5ed5480cd98ff26c801cbf9db0e2a391b08e8247568"
+bridge_addr = "a14c2f3fbcc29b8ff2fe90d14f65e7f740fcfae94bda669853a2c2a017c3c68e"
