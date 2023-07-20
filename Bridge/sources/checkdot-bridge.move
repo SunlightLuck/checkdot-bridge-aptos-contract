@@ -16,7 +16,7 @@ module bridge_addr::checkdot_bridge {
     use liquidswap::curves::Uncorrelated;
 
     use cdt::CdtCoin::CDT;
-    use bridge::asset::USDC;
+    use test_coins::coins::USDT;
 
     const ERR_NOT_INITIALIZED: u64 = 100;
     const ERR_NOT_OWNER: u64 = 200;
@@ -465,7 +465,7 @@ module bridge_addr::checkdot_bridge {
 
         let fees_in_dollar = bridge.fees_in_dollar;
 
-        let (x_res, y_res) = router::get_reserves_size<AptosCoin, USDC, Uncorrelated>();
+        let (x_res, y_res) = router::get_reserves_size<AptosCoin, USDT, Uncorrelated>();
 
         assert!(y_res > 0, ERR_ZERO_DIVISION);
 

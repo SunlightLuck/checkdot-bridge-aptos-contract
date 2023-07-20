@@ -1,9 +1,4 @@
-module bridge::asset {
-    struct USDC {}
+module test_coins::coins {
     struct USDT {}
-    struct BUSD {}
-    struct USDD {}
-
-    struct WETH {}
-    struct WBTC {}
+    struct BTC {}
 }
