@@ -1,2 +1,3 @@
-/build
-/.aptos
+**/build
+**/.aptos
+**/args

@@ -1,7 +1,0 @@
-{
-    "function_id": "default::checkdot_bridge::get_fees_in_apt",
-    "type_args": [
-        "0x1::aptos_coin::AptosCoin"
-    ],
-    "args": []
-}

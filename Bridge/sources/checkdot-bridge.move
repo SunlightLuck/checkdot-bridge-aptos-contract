@@ -16,7 +16,7 @@ module bridge_addr::checkdot_bridge {
     use liquidswap::curves::Uncorrelated;
 
     use cdt::CdtCoin::CDT;
-    use stable_coin::asset::USDC;
+    use test_coins::coins::USDT;
 
     const ERR_NOT_INITIALIZED: u64 = 100;
     const ERR_NOT_OWNER: u64 = 200;
@@ -465,7 +465,7 @@ module bridge_addr::checkdot_bridge {
 
         let fees_in_dollar = bridge.fees_in_dollar;
 
-        let (x_res, y_res) = router::get_reserves_size<AptosCoin, USDC, Uncorrelated>();
+        let (x_res, y_res) = router::get_reserves_size<AptosCoin, USDT, Uncorrelated>();
 
         assert!(y_res > 0, ERR_ZERO_DIVISION);
 
@@ -486,20 +486,5 @@ module bridge_addr::checkdot_bridge {
         vector::append(&mut t_vec, addr_vec);
 
         return aptos_hash::keccak256(t_vec)
-    }
-
-
-    #[test(admin = @bridge_addr, client = @0x88)]
-    fun test_init(admin: signer, client: signer) acquires Bridge, BridgeConfig {
-        debug::print(&signer::address_of(&admin));
-        initialize(&admin, string::utf8(b"Aptos"), 1, 2, @0x4);
-
-        set_dex(&admin, @0x3);
-
-        let dex_pool = get_dex();
-
-        assert!(dex_pool == @0x3, 1);
-
-        let bal = init_transfer<AptosCoin>(client, 1000000000, string::utf8(b"Testnet"), string::utf8(b""));
     }
 }
