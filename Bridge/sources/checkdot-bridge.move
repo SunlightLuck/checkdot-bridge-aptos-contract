@@ -14,6 +14,7 @@ module bridge_addr::checkdot_bridge {
 
     use liquidswap::router;
     use liquidswap::curves::Uncorrelated;
+    use liquidswap::math;
 
     use cdt::CdtCoin::CDT;
 
@@ -235,28 +236,18 @@ module bridge_addr::checkdot_bridge {
         table::add(&mut bridge.transfers_hashs, transfer_hash, transfer_hash);
         table::add(&mut bridge.transfers_indexs, transfer_hash, index);
     }
-    
-    public entry fun add_transfers_from(acc: &signer, transfers_addresses: vector<address>, amounts: vector<u64>, transfers_hashs: vector<vector<u8>>) acquires Bridge, BridgeConfig {
+
+    public entry fun add_transfers_from(acc: &signer, _memory: String/* fromChain */, transfers_address: address, amount: u64, _transfers_hash: vector<u8>) acquires Bridge, BridgeConfig {
         let admin = signer::address_of(acc);
-        assert_is_initizlied();
+        assert_is_initialized();
         assert_is_owner_or_program(admin);
 
         let bridge = borrow_global_mut<Bridge>(@bridge_addr);
-        let len = vector::length(&transfers_addresses);
 
-        let i: u64 = 0;
-        while(i < len) {
-            let addr: &address = vector::borrow(&transfers_addresses, i);
-            let amount: &u64 = vector::borrow(&amounts, i);
-            let hash: &vector<u8> = vector::borrow(&transfers_hashs, i);
-
-            assert!(table::contains(&bridge.transfers_hashs, *hash), ERR_NOT_EXISTS);
-
-            let coin = coin::extract<CDT>(&mut bridge.coin, *amount);
-            coin::deposit<CDT>(*addr, coin);
-
-            table::upsert(&mut bridge.transfers_hashs, *hash, *hash);
-        };
+        assert!(coin::value<CDT>(&bridge.coin) >= amount, ERR_INSUFFICIENT_BALANCE);
+        
+        let coin = coin::extract<CDT>(&mut bridge.coin, amount);
+        coin::deposit<CDT>(transfers_address, coin);
     }
 
     public entry fun collect_cdt_fees(acc: &signer) acquires Bridge, BridgeConfig {
@@ -464,11 +455,15 @@ module bridge_addr::checkdot_bridge {
 
         let fees_in_dollar = bridge.fees_in_dollar;
 
+        let decimals = coin::decimals<USD>();
+
         let (x_res, y_res) = router::get_reserves_size<AptosCoin, USD, Uncorrelated>();
 
         assert!(y_res > 0, ERR_ZERO_DIVISION);
 
-        return fees_in_dollar * x_res / y_res
+        let fees = (fees_in_dollar as u256) * (math::pow_10(decimals) as u256) / (math::pow_10(8) as u256) * (x_res as u256) / (y_res as u256);
+
+        (fees as u64)
     }
 
     fun fees_in_cdt_by_quantity(bridge: &Bridge, quantity: u64): u64 {

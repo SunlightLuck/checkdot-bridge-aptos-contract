@@ -8,4 +8,4 @@ AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", subdir 
 checkdot-aptos-coin = { git = "https://github.com/checkdot/CheckDot.AptosCoinContract.git", rev="aebb04a18c58681229224c2d7424cea8ba8dcf92" }
 
 [addresses]
-bridge_addr = "a14c2f3fbcc29b8ff2fe90d14f65e7f740fcfae94bda669853a2c2a017c3c68e"
+bridge_addr = "5f59f0ebb7d762a48c04acb3799e945d7216c2cdf3e2ea055930ab220711f013"
