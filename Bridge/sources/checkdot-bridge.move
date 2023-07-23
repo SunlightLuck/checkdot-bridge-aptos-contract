@@ -111,7 +111,7 @@ module bridge_addr::checkdot_bridge {
         assert!(bridge.paused, ERR_NOT_ACTIVED);
     }
 
-    public fun assert_is_initizlied() {
+    public fun assert_is_initialized() {
         assert!(exists<Bridge>(@bridge_addr), ERR_NOT_INITIALIZED);
         assert!(exists<BridgeConfig>(@bridge_addr), ERR_NOT_INITIALIZED);
     }
@@ -119,7 +119,7 @@ module bridge_addr::checkdot_bridge {
     public entry fun set_fees_in_dollar(acc: &signer, cost: u64) acquires Bridge, BridgeConfig {
         let addr = signer::address_of(acc);
 
-        assert_is_initizlied();
+        assert_is_initialized();
         assert_is_owner(addr);
 
         let fees_in_dollar = &mut borrow_global_mut<Bridge>(@bridge_addr).fees_in_dollar;
@@ -130,7 +130,7 @@ module bridge_addr::checkdot_bridge {
     public entry fun set_fees_in_cdt_percentage(acc: &signer, fees: u64) acquires Bridge, BridgeConfig {
         let addr = signer::address_of(acc);
 
-        assert_is_initizlied();
+        assert_is_initialized();
         assert_is_owner(addr);
 
         let fees_in_cdt_percentage = &mut borrow_global_mut<Bridge>(@bridge_addr).fees_in_cdt_percentage;
@@ -141,7 +141,7 @@ module bridge_addr::checkdot_bridge {
     public entry fun set_paused(acc: &signer, stat: bool) acquires BridgeConfig {
         let addr = signer::address_of(acc);
 
-        assert_is_initizlied();
+        assert_is_initialized();
         assert_is_owner(addr);
 
         let paused = &mut borrow_global_mut<BridgeConfig>(@bridge_addr).paused;
@@ -152,7 +152,7 @@ module bridge_addr::checkdot_bridge {
     public entry fun set_minimum_transfer_quantity(acc: &signer, quantity: u64) acquires Bridge, BridgeConfig {
         let addr = signer::address_of(acc);
 
-        assert_is_initizlied();
+        assert_is_initialized();
         assert_is_owner(addr);
 
         let minimum_transfer_quantity = &mut borrow_global_mut<Bridge>(@bridge_addr).minimum_transfer_quantity;
@@ -163,7 +163,7 @@ module bridge_addr::checkdot_bridge {
     public entry fun set_owner(acc: &signer, owner: address) acquires BridgeConfig {
         let addr = signer::address_of(acc);
 
-        assert_is_initizlied();
+        assert_is_initialized();
         assert_is_owner(addr);
 
         let bridge_owner = &mut borrow_global_mut<BridgeConfig>(@bridge_addr).owner;
@@ -174,7 +174,7 @@ module bridge_addr::checkdot_bridge {
     public entry fun set_program(acc: &signer, program: address) acquires BridgeConfig {
         let addr = signer::address_of(acc);
 
-        assert_is_initizlied();
+        assert_is_initialized();
         assert_is_owner(addr);
 
         let bridge_program = &mut borrow_global_mut<BridgeConfig>(@bridge_addr).program;
@@ -194,7 +194,7 @@ module bridge_addr::checkdot_bridge {
     public entry fun init_transfer<USD>(acc: &signer, fee: u64, quantity: u64, to_chain: String, data: String) acquires Bridge, BridgeConfig {
         let addr = signer::address_of(acc);
 
-        assert_is_initizlied();
+        assert_is_initialized();
         assert_is_actived();
 
         let bridge = borrow_global_mut<Bridge>(@bridge_addr);
@@ -253,7 +253,7 @@ module bridge_addr::checkdot_bridge {
     public entry fun collect_cdt_fees(acc: &signer) acquires Bridge, BridgeConfig {
         let addr = signer::address_of(acc);
 
-        assert_is_initizlied();
+        assert_is_initialized();
         assert_is_owner(addr);
 
         let bridge = borrow_global_mut<Bridge>(@bridge_addr);
@@ -269,7 +269,7 @@ module bridge_addr::checkdot_bridge {
     public entry fun deposit(acc: &signer, quantity: u64) acquires Bridge, BridgeConfig {
         let addr = signer::address_of(acc);
 
-        assert_is_initizlied();
+        assert_is_initialized();
         assert_is_owner(addr);
 
         assert!(coin::balance<CDT>(addr) >= quantity, ERR_INSUFFICIENT_BALANCE);
@@ -283,7 +283,7 @@ module bridge_addr::checkdot_bridge {
     public entry fun withdraw(acc: &signer, quantity: u64) acquires Bridge, BridgeConfig {
         let addr = signer::address_of(acc);
 
-        assert_is_initizlied();
+        assert_is_initialized();
         assert_is_owner(addr);
 
         let bridge = borrow_global_mut<Bridge>(@bridge_addr);
@@ -336,7 +336,7 @@ module bridge_addr::checkdot_bridge {
 
     #[view]
     public fun transfer_exists(transfer_hash: vector<u8>): bool acquires Bridge {
-        assert_is_initizlied();
+        assert_is_initialized();
 
         let bridge = borrow_global<Bridge>(@bridge_addr);
 
@@ -345,7 +345,7 @@ module bridge_addr::checkdot_bridge {
 
     #[view]
     public fun get_transfer(transfer_hash: vector<u8>): Transfer acquires Bridge {
-        assert_is_initizlied();
+        assert_is_initialized();
 
         let bridge = borrow_global<Bridge>(@bridge_addr);
         assert!(table::contains(&bridge.transfers_indexs, transfer_hash), ERR_NOT_EXISTS);
@@ -359,7 +359,7 @@ module bridge_addr::checkdot_bridge {
 
     #[view]
     public fun get_transfers(page: u64, page_size: u64): vector<Transfer> acquires Bridge {
-        assert_is_initizlied();
+        assert_is_initialized();
 
         let bridge = borrow_global<Bridge>(@bridge_addr);
 
@@ -386,7 +386,7 @@ module bridge_addr::checkdot_bridge {
 
     #[view]
     public fun get_last_transfers(size: u64): vector<Transfer> acquires Bridge {
-        assert_is_initizlied();
+        assert_is_initialized();
 
         let bridge = borrow_global<Bridge>(@bridge_addr);
 
@@ -409,7 +409,7 @@ module bridge_addr::checkdot_bridge {
 
     #[view]
     public fun get_transfer_length(): u64 acquires Bridge {
-        assert_is_initizlied();
+        assert_is_initialized();
 
         let bridge = borrow_global<Bridge>(@bridge_addr);
 
@@ -418,7 +418,7 @@ module bridge_addr::checkdot_bridge {
     
     #[view]
     public fun get_fees_in_apt<USD>(): u64 acquires Bridge {
-        assert_is_initizlied();
+        assert_is_initialized();
 
         let bridge = borrow_global<Bridge>(@bridge_addr);
 
@@ -427,7 +427,7 @@ module bridge_addr::checkdot_bridge {
 
     #[view]
     public fun get_fees_in_dollar(): u64 acquires Bridge {
-        assert_is_initizlied();
+        assert_is_initialized();
 
         let bridge = borrow_global<Bridge>(@bridge_addr);
         bridge.fees_in_dollar
@@ -435,7 +435,7 @@ module bridge_addr::checkdot_bridge {
 
     #[view]
     public fun get_fees_in_cdt_by_quantity(quantity: u64): u64 acquires Bridge {
-        assert_is_initizlied();
+        assert_is_initialized();
 
         let bridge = borrow_global<Bridge>(@bridge_addr);
         quantity * bridge.fees_in_cdt_percentage / 100
@@ -443,7 +443,7 @@ module bridge_addr::checkdot_bridge {
 
     #[view]
     public fun is_paused(): bool acquires BridgeConfig {
-        assert_is_initizlied();
+        assert_is_initialized();
 
         let bridge = borrow_global<BridgeConfig>(@bridge_addr);
         bridge.paused
@@ -451,7 +451,7 @@ module bridge_addr::checkdot_bridge {
 
 
     fun fees_in_apt<USD>(bridge: &Bridge): u64 {
-        assert_is_initizlied();
+        assert_is_initialized();
 
         let fees_in_dollar = bridge.fees_in_dollar;
 
@@ -467,7 +467,7 @@ module bridge_addr::checkdot_bridge {
     }
 
     fun fees_in_cdt_by_quantity(bridge: &Bridge, quantity: u64): u64 {
-        assert_is_initizlied();
+        assert_is_initialized();
 
         quantity * bridge.fees_in_cdt_percentage / 100
     }
